@@ -4,7 +4,7 @@ const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
 module.exports = {
   entry: {
-    app: ["@babel/polyfill", "./src/app/index.js"],
+    app: ["@babel/polyfill", "./src/index.js", "./src/main.scss"],
   },
   output: {
     path: path.resolve(__dirname, "build"),
@@ -23,11 +23,15 @@ module.exports = {
       },
       {
         test: /\.css$/,
-        use: [MiniCssExtractPlugin.loader, "css-loader"],
+        use: [ process.env.NODE_ENV !== 'production'
+        ? 'style-loader'
+        : MiniCssExtractPlugin.loader, "css-loader"],
       },
       {
         test: /\.s[ac]ss$/i,
-        use: [MiniCssExtractPlugin.loader, "css-loader","sass-loader"],
+        use: [process.env.NODE_ENV !== 'production'
+        ? 'style-loader'
+        : MiniCssExtractPlugin.loader, "css-loader","sass-loader"],
       },
     ],
   },

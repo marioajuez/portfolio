@@ -5,7 +5,7 @@
   "main": "index.js",
   "homepage": "https://marioajuez.github.io/portfolio",
   "scripts": {
-    "predeploy" :"npx webpack --mode production",
+    "predeploy": "npx webpack --mode production",
     "deploy": "gh-pages –d build",
     "dev": " webpack serve --open --mode=development",
     "build": "webpack --mode production"
