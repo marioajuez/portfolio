@@ -12,8 +12,15 @@ module.exports = {
   },
 
   devServer: {
-    port: 4000,
+    port: 4001,
   },
+  resolve: {
+    modules: [
+      path.resolve(__dirname, "./app/assets/images/"),
+      "node_modules"
+    ],
+  },
+
 
   module: {
     rules: [
@@ -22,17 +29,44 @@ module.exports = {
         loader: "babel-loader",
       },
       {
-        test: /\.css$/,
-        use: [ process.env.NODE_ENV !== 'production'
-        ? 'style-loader'
-        : MiniCssExtractPlugin.loader, "css-loader"],
+        test: /\.s[ac]ss$/i,
+        // loaders: [ MiniCssExtractPlugin.loader, "css-loader", "sass-loader?sourceMap"],
+        use: [
+          { loader: MiniCssExtractPlugin.loader },
+          { loader: "css-loader" },
+          { loader: "postcss-loader", options: { sourceMap: true } },
+          { loader: "sass-loader", options: { sourceMap: true } },
+           
+        ],
       },
       {
-        test: /\.s[ac]ss$/i,
-        use: [process.env.NODE_ENV !== 'production'
-        ? 'style-loader'
-        : MiniCssExtractPlugin.loader, "css-loader","sass-loader"],
+        test: /\.css$/i,
+        use: [
+          { loader: MiniCssExtractPlugin.loader},
+          { loader: "css-loader", options: { sourceMap: true } },
+          { loader: "postcss-loader", options: { sourceMap: true } },
+        ],
       },
+      {
+        test: /\.(jpg|png|svg|gif)$/i,
+        use: [{
+            loader: 'file-loader',
+            options: {
+                name: '[name].[ext]',
+                outputPath: "img",
+                publicPath: "img",
+                emitFile: true,
+                esModule:false
+            }
+        }]
+    },
+    {
+        test: /\.(html)$/,
+        use: {
+            loader: 'html-loader',
+        }
+    }
+
     ],
   },
 
@@ -53,3 +87,4 @@ module.exports = {
     }),
   ],
 };
+
